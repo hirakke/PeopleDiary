@@ -34,5 +34,5 @@ class Person {
     init(name: String) {
         self.name = name
     }
-    //イニシャライザの必要性については考える必要がある。
+    //イニシャライザの必要性については確認する必要がある。
 }

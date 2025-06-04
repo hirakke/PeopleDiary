@@ -1,61 +1,84 @@
-//
-//  ContentView.swift
-//  PeopleDiary
-//
-//  Created by Keiju Hiramoto on 2025/06/04.
-//
-
 import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
-
+    @State private var date = Date()
+    @State private var isPresented: Bool = false
+    @Query private var people: [Person]
+    
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+        VStack {
+            
+            DatePicker("Start Date",selection: $date,displayedComponents: [.date])
+                           .datePickerStyle(.graphical)
+                           .padding()
+            
+            VStack{
+                ScrollView(.vertical) {
+                    LazyHGrid(rows: [GridItem(.fixed(180)), GridItem(.fixed(180))], spacing: 16) {
+                        ForEach(people) { person in
+                            People(person: person)
+                        }
                     }
+                    .padding(.horizontal)
+                    .frame(height: 380)
                 }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
+                Button(action:{
+                    isPresented = true
+                }){
+                    Text("+")
+                        .font(.system(size: 30, weight: .bold, design: .default))
+                        .foregroundColor(.blue)
                 }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
+                .fullScreenCover(isPresented: $isPresented){
+                    AddDiaryView()
                 }
-            }
-        } detail: {
-            Text("Select an item")
-        }
-    }
 
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+                    
+                    
+                }
+                
             }
         }
+        
+        /*.background(
+            Color(red:255,green:248,blue:219)
+                .edgesIgnoringSafeArea(.all)
+        )*/
     }
-}
+        
+
 
 #Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+    @MainActor
+    struct PreviewWrapper: View {
+        let container: ModelContainer
+
+        init() {
+            do {
+                let config = ModelConfiguration(isStoredInMemoryOnly: true)
+                container = try ModelContainer(for: Person.self, DiaryEntry.self, configurations: config)
+
+                let person1 = Person(name: "浦島太郎")
+                let person2 = Person(name: "金之助")
+
+                let diary1 = DiaryEntry(date: Date(), content: "亀を助けた。", person: person1)
+                let diary2 = DiaryEntry(date: Date(), content: "宝探しに出かけた。", person: person2)
+
+                container.mainContext.insert(person1)
+                container.mainContext.insert(person2)
+                container.mainContext.insert(diary1)
+                container.mainContext.insert(diary2)
+            } catch {
+                fatalError("Failed to create container: \(error)")
+            }
+        }
+
+        var body: some View {
+            ContentView()
+                .modelContainer(container)
+        }
+    }
+
+    return PreviewWrapper()
 }
