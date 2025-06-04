@@ -20,6 +20,8 @@ struct AddDiaryView: View {
     @State private var nowDate = Date()
     @State private var dateText = ""
     
+    @State private var isPresented: Bool = false
+    
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy/MM/dd"
@@ -32,7 +34,7 @@ struct AddDiaryView: View {
             // ヘッダー
             HStack {
                 Button(action: {
-                    dismiss()
+                    dismiss()//前の画面に戻るaction
                 }) {
                     Text("戻る")
                         .font(.title3)
@@ -55,12 +57,15 @@ struct AddDiaryView: View {
                 Spacer()
                 
                 Button(action: {
-                    saveEntry()
-                    dismiss()
+                    saveEntry()//保存の関数を呼び出し
+                    isPresented = true//次のページにいく
                 }) {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 24))
                         .foregroundColor(.orange)
+                }
+                .fullScreenCover(isPresented: $isPresented){
+                    DiaryView()
                 }
                 .padding()
             }
@@ -73,9 +78,12 @@ struct AddDiaryView: View {
             // 日記入力欄
             ZStack(alignment: .topLeading) {
                 TextEditor(text: $content)
-                    .frame(height: 150)
-                    .padding(.horizontal)
+                    .frame(width:340,height: 500)
+                    
+                    .padding()
+                    .cornerRadius(8)
                     .border(Color.gray.opacity(0.5), width: 1)
+                    
                 
                 if content.isEmpty {
                     Text("ここに文字を入力してください。")
@@ -92,7 +100,7 @@ struct AddDiaryView: View {
     }
     
     func saveEntry() {
-        guard !name.isEmpty, !content.isEmpty else { return }
+        guard !name.isEmpty, !content.isEmpty else { return }//空データ対策
         
         let person = people.first(where: { $0.name == name }) ?? {
             let newPerson = Person(name: name)

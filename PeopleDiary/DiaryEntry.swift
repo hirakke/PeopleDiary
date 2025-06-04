@@ -18,7 +18,6 @@ class DiaryEntry {
         self.date = date
         self.content = content
         self.person = person
-        
     }
 
     var contentLength: Int {

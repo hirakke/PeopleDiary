@@ -15,9 +15,9 @@ struct ContentView: View {
             
             VStack{
                 ScrollView(.vertical) {
-                    LazyHGrid(rows: [GridItem(.fixed(180)), GridItem(.fixed(180))], spacing: 16) {
+                    LazyVGrid(columns: [GridItem(.fixed(180)), GridItem(.fixed(180))], spacing: 16) {
                         ForEach(people) { person in
-                            People(person: person)
+                            People(person: person)//Personクラスのperson変数に各people(データ)を代入して
                         }
                     }
                     .padding(.horizontal)
@@ -30,6 +30,7 @@ struct ContentView: View {
                         .font(.system(size: 30, weight: .bold, design: .default))
                         .foregroundColor(.blue)
                 }
+                
                 .fullScreenCover(isPresented: $isPresented){
                     AddDiaryView()
                 }
@@ -50,35 +51,6 @@ struct ContentView: View {
 
 
 #Preview {
-    @MainActor
-    struct PreviewWrapper: View {
-        let container: ModelContainer
-
-        init() {
-            do {
-                let config = ModelConfiguration(isStoredInMemoryOnly: true)
-                container = try ModelContainer(for: Person.self, DiaryEntry.self, configurations: config)
-
-                let person1 = Person(name: "浦島太郎")
-                let person2 = Person(name: "金之助")
-
-                let diary1 = DiaryEntry(date: Date(), content: "亀を助けた。", person: person1)
-                let diary2 = DiaryEntry(date: Date(), content: "宝探しに出かけた。", person: person2)
-
-                container.mainContext.insert(person1)
-                container.mainContext.insert(person2)
-                container.mainContext.insert(diary1)
-                container.mainContext.insert(diary2)
-            } catch {
-                fatalError("Failed to create container: \(error)")
-            }
-        }
-
-        var body: some View {
-            ContentView()
-                .modelContainer(container)
-        }
-    }
-
-    return PreviewWrapper()
+    ContentView()
+        .modelContainer(SampleData.sampleContainer())
 }

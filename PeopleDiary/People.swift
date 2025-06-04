@@ -86,38 +86,9 @@ struct People: View {
     }
 }
 #Preview {
-    @MainActor
-    struct PreviewWrapper: View {
-        let container: ModelContainer
-        let samplePerson: Person
+    let container = SampleData.sampleContainer()
+    let person = try! container.mainContext.fetch(FetchDescriptor<Person>()).first!
 
-        init() {
-            do {
-                let config = ModelConfiguration(isStoredInMemoryOnly: true)
-                // PersonとDiaryの両方のモデルをコンテナに認識させる
-                
-                container = try ModelContainer(for: Person.self, DiaryEntry.self, configurations: config)
-                
-                let person = Person(name: "浦島太郎")
-                
-                let diary1 = DiaryEntry(date: Calendar.current.date(byAdding: .day, value: -5, to: Date())!, content: "亀を助けたら、竜宮城に連れて行ってもらった。", person: person)
-                let diary2 = DiaryEntry(date: Calendar.current.date(byAdding: .day, value: -2, to: Date())!, content: "帰りにお土産で玉手箱をもらった。", person: person)
-                
-                container.mainContext.insert(person)
-                container.mainContext.insert(diary1)
-                container.mainContext.insert(diary2)
-                
-                self.samplePerson = person
-            } catch {
-                fatalError("Failed to create model container for preview: \(error)")
-            }
-        }
-
-        var body: some View {
-            People(person: samplePerson)
-                .modelContainer(container)
-        }
-    }
-    
-    return PreviewWrapper()
+    return People(person: person)
+        .modelContainer(container)
 }
