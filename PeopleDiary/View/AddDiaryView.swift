@@ -19,8 +19,9 @@ struct AddDiaryView: View {
     @State private var content = ""
     @State private var nowDate = Date()
     @State private var dateText = ""
+    @State private var showAlert = false
     
-    @State private var isPresented: Bool = false
+    @State private var savedPerson: Person? = nil
     
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -56,18 +57,23 @@ struct AddDiaryView: View {
                 
                 Spacer()
                 
+                //チェックボタン
                 Button(action: {
                     saveEntry()//保存の関数を呼び出し
-                    isPresented = true//次のページにいく
                 }) {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 24))
                         .foregroundColor(.orange)
                 }
-                .fullScreenCover(isPresented: $isPresented){
-                    DiaryView()
+                .fullScreenCover(isPresented: .constant(savedPerson != nil)) {
+                    if let person = savedPerson {
+                        PeopleDiaryView(person: person)
+                    }
                 }
                 .padding()
+                .alert("すべての項目を入力してください", isPresented: $showAlert) {
+                    Button("OK", role: .cancel) {}
+                }//showAlertの時はポップアップでアラート
             }
             
             // 名前入力欄
@@ -81,38 +87,43 @@ struct AddDiaryView: View {
                     .frame(width:340,height: 500)
                     
                     .padding()
-                    .cornerRadius(8)
-                    .border(Color.gray.opacity(0.5), width: 1)
                     
+                    .border(Color.gray.opacity(0.2), width: 1)
+                    .cornerRadius(8)
                 
                 if content.isEmpty {
                     Text("ここに文字を入力してください。")
                         .foregroundColor(.gray)
-                        .padding(.top, 8)
-                        .padding(.horizontal, 12)
-                        .allowsHitTesting(false)
                 }
             }
             .padding(.top, 8)
-            
             Spacer()
         }
     }
-    
-    func saveEntry() {
-        guard !name.isEmpty, !content.isEmpty else { return }//空データ対策
-        
-        let person = people.first(where: { $0.name == name }) ?? {
-            let newPerson = Person(name: name)
-            context.insert(newPerson)
-            return newPerson
-        }()
-        
-        let entry = DiaryEntry(date: nowDate, content: content, person: person)
-        context.insert(entry)
-        //person.totalPoints += 50
-        
-        try? context.save()
+    private func saveEntry() {
+        guard !name.isEmpty, !content.isEmpty else {
+                showAlert = true
+                return
+            }
+            // Person を既存から探すか、新規作成
+            let person = people.first(where: { $0.name == name }) ?? {
+                let newPerson = Person(name: name)
+                context.insert(newPerson)
+                return newPerson
+            }()
+
+            // DiaryEntry を作成して person に紐付け
+            let diary = DiaryEntry(date: Date(), content: content)
+            diary.person = person
+            person.diaryEntries.append(diary)
+
+            // 挿入と保存
+            context.insert(diary)
+            try? context.save()
+
+            // 遷移用
+            savedPerson = person
+
     }
 }
     
@@ -120,4 +131,3 @@ struct AddDiaryView: View {
     #Preview {
         AddDiaryView()
     }
-

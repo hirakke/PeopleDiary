@@ -8,13 +8,14 @@
 import SwiftUI
 import SwiftData
 
+
 @Model
 class DiaryEntry {
     var date: Date
     var content: String
-    var person: Person
+    var person: Person?
 
-    init(date: Date, content: String, person: Person) {
+    init(date: Date, content: String, person: Person? = nil) {
         self.date = date
         self.content = content
         self.person = person

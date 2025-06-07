@@ -12,8 +12,10 @@ import SwiftData
 struct PeopleDiaryApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Person.self,
+            DiaryEntry.self
         ])
+        
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
         do {
@@ -26,6 +28,9 @@ struct PeopleDiaryApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .modelContainer(for: DiaryEntry.self)
+                .modelContainer(for: Person.self)
+                
         }
         .modelContainer(sharedModelContainer)
     }

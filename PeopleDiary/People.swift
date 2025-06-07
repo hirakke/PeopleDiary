@@ -3,79 +3,81 @@
 //  PeopleDiary
 //
 //  Created by Keiju Hiramoto on 2025/06/04.
-//
+
 
 import SwiftUI
 import SwiftData
 
 struct People: View {
     @Environment(\.modelContext) private var context
-    let person : Person
-    
+    let person: Person
+
+    @Query private var allEntries: [DiaryEntry]
+
+    private var filteredEntries: [DiaryEntry] {
+        allEntries.filter { $0.person === person }
+    }
+
     private var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter
     }
-    
+
     var body: some View {
-        
-        VStack{
-            VStack(alignment: .leading){
-                HStack{
+        VStack {
+            VStack(alignment: .leading) {
+                HStack {
                     Text(person.name)
                         .font(.subheadline)
                         .foregroundStyle(.black)
                         .fontWeight(.bold)
-                    ZStack{
+                    ZStack {
                         Rectangle()
                             .frame(width: 59, height: 21)
                             .foregroundColor(.blue)
                             .cornerRadius(5)
-                        Text("\(person.tagText)")
+                        Text(tagText)
                             .font(.caption)
                             .foregroundColor(.white)
                     }
-                    
                 }
-                HStack(alignment:.center){
-                    Image(systemName:"note.text")
+
+                HStack {
+                    Image(systemName: "note.text")
                         .font(.caption)
                         .foregroundColor(.secondary)
                     Text("日記")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
-                
-                Text("\(person.diaryEntries.count)")
-                
-                HStack{
-                    Image(systemName:"person.line.dotted.person")
+                Text("\(filteredEntries.count)")
+
+                HStack {
+                    Image(systemName: "person.line.dotted.person")
                         .font(.caption)
                         .foregroundColor(.secondary)
                     Text("親密度")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
-                
-                Text("\(person.totalPoints)")
-                
-                HStack{
-                    Image(systemName:"clock.arrow.trianglehead.2.counterclockwise.rotate.90")
+                Text("\(filteredEntries.count * 50)")
+
+                HStack {
+                    Image(systemName: "clock.arrow.trianglehead.2.counterclockwise.rotate.90")
                         .font(.caption)
                         .foregroundColor(.secondary)
                     Text("更新日")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
-                if let lastUpdate = person.lastUpdate{
-                    Text(dateFormatter.string(from: person.lastUpdate!))
+                if let lastUpdate = filteredEntries.map({ $0.date }).max() {
+                    Text(dateFormatter.string(from: lastUpdate))
                         .font(.subheadline)
-                }   else{
+                } else {
                     Text("未記録")
                         .font(.subheadline)
                 }
-                
             }
             .frame(width: 175, height: 165)
             .background(Color.white)
@@ -84,11 +86,13 @@ struct People: View {
         }
         .background(Color.gray.opacity(0.1))
     }
-}
-#Preview {
-    let container = SampleData.sampleContainer()
-    let person = try! container.mainContext.fetch(FetchDescriptor<Person>()).first!
 
-    return People(person: person)
-        .modelContainer(container)
+    private var tagText: String {
+        let points = filteredEntries.count * 50
+        switch points {
+        case 0..<100: return "まだまだ"
+        case 100..<200: return "これから"
+        default: return "まだまだ"
+        }
+    }
 }

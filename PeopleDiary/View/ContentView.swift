@@ -5,6 +5,7 @@ struct ContentView: View {
     @State private var date = Date()
     @State private var isPresented: Bool = false
     @Query private var people: [Person]
+    @Query private var diaryEntry: [DiaryEntry]
     
     var body: some View {
         VStack {
@@ -17,7 +18,8 @@ struct ContentView: View {
                 ScrollView(.vertical) {
                     LazyVGrid(columns: [GridItem(.fixed(180)), GridItem(.fixed(180))], spacing: 16) {
                         ForEach(people) { person in
-                            People(person: person)//Personクラスのperson変数に各people(データ)を代入して
+                            People(person: person)
+                            //Personクラスのperson変数に各people(データ)を代入して
                         }
                     }
                     .padding(.horizontal)
