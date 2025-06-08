@@ -10,6 +10,7 @@ import SwiftData
 
 struct PeopleDiaryView: View {
     let person: Person
+    @Environment(\.dismiss) var dismiss
     @Binding var isPresented: Bool
     @Query private var allEntries: [DiaryEntry]
     
@@ -34,6 +35,7 @@ struct PeopleDiaryView: View {
     }
     
     var body: some View {
+        
         VStack {
             HStack{
                 Spacer()
@@ -42,7 +44,7 @@ struct PeopleDiaryView: View {
                     .fontWeight(.bold)
                    Spacer()
                     
-                Button(action: {
+             /*   Button(action: {
                     isPresented = false//画面切り替えのスイッチオフ
                 } ){
                     Image(systemName: "xmark")
@@ -57,6 +59,7 @@ struct PeopleDiaryView: View {
                 }
                 .padding()
                  */
+              */
             }
                 HStack{
                     Text("日記: \(filteredEntries.count)")
@@ -67,36 +70,58 @@ struct PeopleDiaryView: View {
                 
                 
                 
-                ScrollView {
-                    ForEach(filteredEntries) { diary in
-                        HStack{
-                            Text(" \(diary.date.formatted(.dateTime.year().month().day()))")
-                                .foregroundStyle(.secondary)
-                            Divider()//縦線
-                                .frame(height:110)
-                                .background(.black)
-                            Text(diary.content)
-                                .padding()
-                                .frame(width:233,height:136)
-                                }
-                        .lineLimit(3)//contentの行数制限
+            ScrollView {
+                ForEach(filteredEntries) { diary in
+                    HStack{
+                        Text(" \(diary.date.formatted(.dateTime.year().month().day()))")
+                            .foregroundStyle(.secondary)
+                        Divider()//縦線
+                            .frame(height:110)
+                            .background(.black)
+                        Text(diary.content)
+                            .padding()
+                            .frame(width:233,height:136)
+                    }
+                    .lineLimit(3)//contentの行数制限
+                    
+                    .frame(width:376,height:136)
+                    .background(Color.white)
+                    .cornerRadius(15)
+                    .shadow(color: .gray.opacity(0.1),radius: 10,x: 0,y: 4)
+                    
+                    
+                    
+                    
+                    
+                    
+                }}
+                }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                }) {
+                    HStack {
                         
-                        .frame(width:376,height:136)
-                        .background(Color.white)
-                        .cornerRadius(15)
-                        .shadow(color: .gray.opacity(0.1),radius: 10,x: 0,y: 4)
-                        
-                        
-                        
-                        
-                        
+                        Image(systemName: "xmark")
+                            .foregroundColor(.white)
+                            .bold()
+                            .font(.system(.title))
+                            .frame(width: 70, height: 50)
+                            .background(Color.orange)
+                            .cornerRadius(25)
+                            .padding(10)
                         
                     }
                 }
+            }
+        }
+        
             
         }
     }
-}
+
 
 
 

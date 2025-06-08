@@ -31,24 +31,24 @@ struct AddDiaryView: View {
         return formatter
     }()
     
-    var body: some View {
+    var body: some View{
         NavigationStack{
             VStack {
                 
                 // ヘッダー
                 HStack {
-                  
-                        Button(action: {
-                            dismiss()//前の画面に戻るaction
-                        }) {
-                            Image(systemName: "xmark")
-                                .foregroundColor(.white)
-                                .bold()
-                                .font(.system(.title))
-                                .frame(width: 70, height: 50)
-                                .background(Color.orange)
-                                .cornerRadius(25)
-                        }
+                    
+                    Button(action: {
+                        dismiss()//前の画面に戻るaction
+                    }) {
+                        Image(systemName: "xmark")
+                            .foregroundColor(.white)
+                            .bold()
+                            .font(.system(.title))
+                            .frame(width: 70, height: 50)
+                            .background(Color.orange)
+                            .cornerRadius(25)
+                    }
                     
                     .padding(.leading)
                     
@@ -67,70 +67,76 @@ struct AddDiaryView: View {
                     Spacer()
                     
                     //チェックボタン
+                    
+                    Button(action: {
+                        saveEntry()//保存の関数を呼び出し
+                    }) {
+                        Image(systemName: "checkmark")
+                            .foregroundColor(.white)
+                            .bold()
+                            .font(.system(.title))
+                            .frame(width: 70, height: 50)
+                            .background(Color.orange)
+                            .cornerRadius(25)
                         
-                        Button(action: {
-                            saveEntry()//保存の関数を呼び出し
-                        }) {
-                            Image(systemName: "checkmark")
-                                .foregroundColor(.white)
-                                .bold()
-                                .font(.system(.title))
-                                .frame(width: 70, height: 50)
-                                .background(Color.orange)
-                                .cornerRadius(25)
-                            
-                        }
-                    
+                    }
+                    .navigationDestination(item: $savedPerson){ person in
+                        PeopleDiaryView(person: person, isPresented: $isPresented)
+                    }
                     /*
-                    .fullScreenCover(item: $savedPerson){ person in
-                            PeopleDiaryView(person: person, isPresented: $isPresented)
-                        */
-                    }
-                    .padding()
-                    .alert("すべての項目を入力してください", isPresented: $showAlert) {
-                        Button("OK", role: .cancel) {}
-                    }//showAlertの時はポップアップでアラート
+                     .fullScreenCover(item: $savedPerson){ person in
+                     PeopleDiaryView(person: person, isPresented: $isPresented)
+                     */
                 }
-                
-                // 名前入力欄
-                TextField("名前を入力してください", text: $name)
-                    .textFieldStyle(.roundedBorder)
-                    .padding(.horizontal)
-                
-                // 日記入力欄
-                ZStack(alignment: .topLeading) {
-                    TextEditor(text: $content)
-                        .frame(width:340,height: 500)
-                    
-                        .padding()
-                    
-                        .border(Color.gray.opacity(0.2), width: 1)
-                        .cornerRadius(8)
-                    
-                    if content.isEmpty {
-                        Text("ここに文字を入力してください。")
-                            .foregroundColor(.gray)
-                    }
-                }
-                .padding(.top, 8)
-                Spacer()
-            
-            NavigationLink(
-                destination: {
-                        if let saved = savedPerson {
-                            PeopleDiaryView(person: saved, isPresented: $isPresented)
-                        } else {
-                            // fallback View が必要（空ViewでもOK）
-                            EmptyView()
-                        }
-                },
-                isActive: $navigateToDiary,
-                label: {
-                    EmptyView()
-                }
-            )
-            .hidden()
+                .padding()
+                .alert("すべての項目を入力してください", isPresented: $showAlert) {
+                    Button("OK", role: .cancel) {}
+                }//showAlertの時はポップアップでアラート
             }
+            
+            // 名前入力欄
+            TextField("名前を入力してください", text: $name)
+                .textFieldStyle(.roundedBorder)
+                .padding(.horizontal)
+            
+            // 日記入力欄
+            ZStack(alignment: .topLeading) {
+                TextEditor(text: $content)
+                    .frame(width:340,height: 500)
+                
+                    .padding()
+                
+                    .border(Color.gray.opacity(0.2), width: 1)
+                    .cornerRadius(8)
+                
+                if content.isEmpty {
+                    Text("ここに文字を入力してください。")
+                        .foregroundColor(.gray)
+                }
+            }
+            .padding(.top, 8)
+            Spacer()
+            
+            /*NavigationLink(
+             destination: {
+             Group{
+             if let saved = savedPerson {
+             PeopleDiaryView(person: saved, isPresented: $isPresented)
+             } else {
+             // fallback View が必要（空ViewでもOK）
+             EmptyView()
+             }
+             }
+             },
+             isActive: $navigateToDiary,
+             label: {
+             EmptyView()
+             }
+             )
+             .hidden()
+             
+             */
+        }
         
         }
     
