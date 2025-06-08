@@ -20,6 +20,7 @@ class Person {
 
     var lastUpdate: Date? {
         diaryEntries.map(\.date).max()
+        
     }
 
     var tagText: String {

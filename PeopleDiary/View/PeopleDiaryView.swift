@@ -10,7 +10,7 @@ import SwiftData
 
 struct PeopleDiaryView: View {
     let person: Person
-    @State private var isPresented: Bool = false
+    @Binding var isPresented: Bool
     @Query private var allEntries: [DiaryEntry]
     
     var filteredEntries: [DiaryEntry] {
@@ -40,16 +40,23 @@ struct PeopleDiaryView: View {
                 Text("\(person.name)")
                     .font(.title)
                     .fontWeight(.bold)
+                   Spacer()
                     
-                    Spacer()
                 Button(action: {
-                    isPresented = true//画面切り替えのスイッチ
+                    isPresented = false//画面切り替えのスイッチオフ
                 } ){
-                    Text("x")
+                    Image(systemName: "xmark")
+                        .frame(width: 50, height: 50)
+                        .background(Color.orange)
+                        .foregroundStyle(.white)
+                        .bold()
+                        .cornerRadius(30)
                 }
-                .fullScreenCover(isPresented: $isPresented) {
+                /*.fullScreenCover(isPresented: $isPresented) {
                     ContentView()
                 }
+                .padding()
+                 */
             }
                 HStack{
                     Text("日記: \(filteredEntries.count)")
@@ -70,6 +77,7 @@ struct PeopleDiaryView: View {
                                 .background(.black)
                             Text(diary.content)
                                 .padding()
+                                .frame(width:233,height:136)
                                 }
                         .lineLimit(3)//contentの行数制限
                         
@@ -90,10 +98,12 @@ struct PeopleDiaryView: View {
     }
 }
 
+
+
 #Preview {
     let container = SampleData.sampleContainer()
     let person = try! container.mainContext.fetch(FetchDescriptor<Person>()).first!
 
-    return PeopleDiaryView(person: person)
+    PeopleDiaryView(person: person, isPresented: .constant(true))
         .modelContainer(container)
 }

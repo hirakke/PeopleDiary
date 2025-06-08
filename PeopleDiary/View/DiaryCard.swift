@@ -4,7 +4,8 @@
 //
 //  Created by Keiju Hiramoto on 2025/06/05.
 //
-
+//使用していないファイル
+/*
 import SwiftUI
 import SwiftData
 
@@ -55,3 +56,4 @@ struct DiaryCard: View {
     return DiaryCard(diary: diary,person:person)
         .modelContainer(container)
 }
+*/

@@ -16,6 +16,7 @@ struct People: View {
 
     private var filteredEntries: [DiaryEntry] {
         allEntries.filter { $0.person === person }
+        //===は同じオブジェクトであると真ここではDiaryEntryの全てのうち￥
     }
 
     private var dateFormatter: DateFormatter {
@@ -32,6 +33,7 @@ struct People: View {
                         .font(.subheadline)
                         .foregroundStyle(.black)
                         .fontWeight(.bold)
+                        .frame(width:90,height:20,alignment:.leading)
                     ZStack {
                         Rectangle()
                             .frame(width: 59, height: 21)
@@ -52,6 +54,7 @@ struct People: View {
                         .foregroundColor(.secondary)
                 }
                 Text("\(filteredEntries.count)")
+                    .foregroundColor(.black)
 
                 HStack {
                     Image(systemName: "person.line.dotted.person")
@@ -62,6 +65,7 @@ struct People: View {
                         .foregroundColor(.secondary)
                 }
                 Text("\(filteredEntries.count * 50)")
+                    .foregroundColor(.black)
 
                 HStack {
                     Image(systemName: "clock.arrow.trianglehead.2.counterclockwise.rotate.90")
@@ -72,8 +76,15 @@ struct People: View {
                         .foregroundColor(.secondary)
                 }
                 if let lastUpdate = filteredEntries.map({ $0.date }).max() {
+                    /*
+                     全要素同じ処理を適用したい場合はmapを使用
+                     $0は全配列のそれぞれ一個ずつを表している、ForEach文を使わなくて済む。
+                     
+                     */
                     Text(dateFormatter.string(from: lastUpdate))
                         .font(.subheadline)
+                        .foregroundColor(.black)
+                    //lastUpdateはdateが最も大きいものを採用
                 } else {
                     Text("未記録")
                         .font(.subheadline)
