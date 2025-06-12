@@ -32,113 +32,129 @@ struct AddDiaryView: View {
     }()
     
     var body: some View{
-        NavigationStack{
-            VStack {
-                
-                // ヘッダー
-                HStack {
-                    
-                    Button(action: {
-                        dismiss()//前の画面に戻るaction
-                    }) {
-                        Image(systemName: "xmark")
-                            .foregroundColor(.white)
-                            .bold()
-                            .font(.system(.title))
-                            .frame(width: 70, height: 50)
-                            .background(Color.orange)
-                            .cornerRadius(25)
-                    }
-                    
-                    .padding(.leading)
-                    
-                    Spacer()
-                    
-                    Text(dateText.isEmpty ? dateFormatter.string(from: nowDate) : dateText)
-                        .onAppear {
-                            Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                                self.nowDate = Date()
-                                dateText = dateFormatter.string(from: nowDate)
+            NavigationStack{
+                    VStack {
+                        HStack {
+                            Spacer()
+                            Button(action: {
+                                dismiss()//前の画面に戻るaction
+                            }) {
+                                Image(systemName: "xmark")
+                                    .foregroundColor(.white)
+                                    .bold()
+                                    .font(.system(.title))
+                                    .frame(width: 70, height: 50)
+                                    .background(Color.orange)
+                                    .cornerRadius(25)
+                                    .shadow(color:.gray.opacity(0.2), radius: 3,x:0,y:4)
                             }
-                        }//今日の日付を表示
-                        .font(.title3)
-                        .bold()
-                    
-                    Spacer()
-                    
-                    //チェックボタン
-                    
-                    Button(action: {
-                        saveEntry()//保存の関数を呼び出し
-                    }) {
-                        Image(systemName: "checkmark")
-                            .foregroundColor(.white)
-                            .bold()
-                            .font(.system(.title))
-                            .frame(width: 70, height: 50)
-                            .background(Color.orange)
-                            .cornerRadius(25)
-                        
-                    }
-                    .navigationDestination(item: $savedPerson){ person in
-                        PeopleDiaryView(person: person, isPresented: $isPresented)
-                    }
-                    /*
-                     .fullScreenCover(item: $savedPerson){ person in
-                     PeopleDiaryView(person: person, isPresented: $isPresented)
-                     */
-                }
-                .padding()
-                .alert("すべての項目を入力してください", isPresented: $showAlert) {
-                    Button("OK", role: .cancel) {}
-                }//showAlertの時はポップアップでアラート
-            }
-            
-            // 名前入力欄
-            TextField("名前を入力してください", text: $name)
-                .textFieldStyle(.roundedBorder)
-                .padding(.horizontal)
-            
-            // 日記入力欄
-            ZStack(alignment: .topLeading) {
-                TextEditor(text: $content)
-                    .frame(width:340,height: 500)
-                
-                    .padding()
-                
-                    .border(Color.gray.opacity(0.2), width: 1)
-                    .cornerRadius(8)
-                
-                if content.isEmpty {
-                    Text("ここに文字を入力してください。")
-                        .foregroundColor(.gray)
-                }
-            }
-            .padding(.top, 8)
-            Spacer()
-            
-            /*NavigationLink(
-             destination: {
-             Group{
-             if let saved = savedPerson {
-             PeopleDiaryView(person: saved, isPresented: $isPresented)
-             } else {
-             // fallback View が必要（空ViewでもOK）
-             EmptyView()
-             }
-             }
-             },
-             isActive: $navigateToDiary,
-             label: {
-             EmptyView()
-             }
-             )
-             .hidden()
-             
-             */
-        }
         
-        }
+                            
+                            Spacer()
+                            
+                            Text(dateText.isEmpty ? dateFormatter.string(from: nowDate) : dateText)
+                                .onAppear {
+                                    Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                                        self.nowDate = Date()
+                                        dateText = dateFormatter.string(from: nowDate)
+                                    }
+                                }//今日の日付を表示
+                                .font(.title)
+                                .bold()
+                            
+                            Spacer()
+                            
+                            //チェックボタン
+                            
+                            Button(action: {
+                                saveEntry()//保存の関数を呼び出し
+                            }) {
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.white)
+                                    .bold()
+                                    .font(.system(.title))
+                                    .frame(width: 70, height: 50)
+                                    .background(Color.orange)
+                                    .cornerRadius(25)
+                                    .shadow(color:.gray.opacity(0.2), radius: 3,x:0,y:4)
+                                
+                            }
+                            .navigationDestination(item: $savedPerson){ person in
+                                PeopleDiaryView(person: person, isPresented: $isPresented)
+                            }
+                            Spacer()
+                            /*
+                             .fullScreenCover(item: $savedPerson){ person in
+                             PeopleDiaryView(person: person, isPresented: $isPresented)
+                             */
+                        }
+                        .alert("すべての項目を入力してください", isPresented: $showAlert) {
+                            Button("OK", role: .cancel) {}
+                        }//showAlertの時はポップアップでアラート
+                    }
+                }
+                // 名前入力欄
+                TextField("名前を入力してください", text: $name)
+                    .textFieldStyle(.roundedBorder)
+                    .font(.headline)
+                    .padding()
+                    .shadow(color:.gray.opacity(0.2),radius:3,x:0,y:2)
+                
+                // 日記入力欄
+        ZStack(alignment: .topLeading) {
+         
+                
+                    TextEditor(text: $content)
+              
+                .frame(height: 600)
+                .font(.headline)
+                .overlay(
+                               RoundedRectangle(cornerRadius: 10)
+                                   .stroke(Color.gray, lineWidth: 0.1)
+                           )
+            
+                
+                        
+                        .border(Color.gray.opacity(0.1), width: 1)
+                        .cornerRadius(4)
+                        .padding(5)
+                        
+                        
+                    
+                    if content.isEmpty {
+                        Text("ここに文字を入力してください。")
+                            .foregroundColor(.secondary)
+                            .padding()
+                            .font(.headline)
+                    }
+                }
+        
+                .padding(8)
+                Spacer()
+                
+                /*NavigationLink(
+                 destination: {
+                 Group{
+                 if let saved = savedPerson {
+                 PeopleDiaryView(person: saved, isPresented: $isPresented)
+                 } else {
+                 // fallback View が必要（空ViewでもOK）
+                 EmptyView()
+                 }
+                 }
+                 },
+                 isActive: $navigateToDiary,
+                 label: {
+                 EmptyView()
+                 }
+                 )
+                 .hidden()
+                 
+                 */
+            
+            
+        
+    }
     
         private func saveEntry() {
             guard !name.isEmpty, !content.isEmpty else {
