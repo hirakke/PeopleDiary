@@ -13,7 +13,6 @@ struct PeopleDiaryView: View {
     @Environment(\.dismiss) var dismiss
     @Binding var isPresented: Bool
     @Query private var allEntries: [DiaryEntry]
-    @State private var selectedDiary: DiaryEntry? = nil
     
     var filteredEntries: [DiaryEntry] {
         allEntries.filter { $0.person === person }//指定された人と一致する日記を表示
@@ -171,32 +170,29 @@ struct PeopleDiaryView: View {
                     }
                     ScrollView {
                         ForEach(filteredEntries) { diary in
-                            HStack {
-                                Text(" \(formattedDate(diary.date))")
-                                    .foregroundStyle(.secondary)
-                                Divider()
-                                    .frame(height: 110)
-                                    .background(Color.black)
-                                    
-                                Text(diary.content)
-                                    .padding()
-                                    .frame(width: 233, height: 136)
+                            NavigationLink(destination: DiaryDetailView(diary: diary)) {
+                                HStack {
+                                    Text(" \(formattedDate(diary.date))")
+                                        .foregroundStyle(.secondary)
+                                    Divider()
+                                        .frame(height: 110)
+                                        .background(Color.black)
+
+                                    Text(diary.content)
+                                        .padding()
+                                        .frame(width: 233, height: 136)
+                                }
+                                .lineLimit(3)
+                                .frame(width: 376, height: 136)
+                                .background(Color.white)
+                                .cornerRadius(15)
+                                .padding()
+                                .shadow(color: .gray.opacity(0.1), radius: 10, x: 0, y: 4)
                             }
-                            .lineLimit(3)
-                            .frame(width: 376, height: 136)
-                            .background(Color.white)
-                            .cornerRadius(15)
-                            .padding()
-                            .shadow(color: .gray.opacity(0.1), radius: 10, x: 0, y: 4)
-                            .onTapGesture {
-                                selectedDiary = diary
-                            }
+                            .buttonStyle(PlainButtonStyle())
                         }
                     }
                 }
-            }
-            .navigationDestination(item: $selectedDiary) { diary in
-                DiaryDetailView(diary: diary)
             }
             .navigationBarBackButtonHidden(true)
             .toolbar {

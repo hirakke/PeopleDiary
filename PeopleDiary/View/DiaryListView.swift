@@ -18,31 +18,19 @@ struct DiaryListView: View {
         let filteredEntries = diaryEntries.filter {
             calendar.isDate($0.date, inSameDayAs: forDate)
         }
-        
-        ZStack{
+
+        ZStack {
             Color(red: 255/255, green: 248/255, blue: 219/255)
                 .ignoresSafeArea()
             VStack {
-                
-                
                 Text("\(formattedDate(forDate)) の日記")
                     .font(.title2)
                     .padding()
-                
+
                 if filteredEntries.isEmpty {
                     Text("この日の日記はまだありません。")
                         .foregroundColor(.gray)
                         .padding()
-                        .navigationBarBackButtonHidden(true)
-                        .toolbar {
-                            ToolbarItem(placement: .bottomBar) {
-                                Button(action: {
-                                    dismiss()
-                                }) {
-                                    Label("Sign In", systemImage: "arrowshape.turn.up.backward.circle")
-                                }
-                            }
-                        }
                 } else {
                     ScrollView {
                         ForEach(filteredEntries) { entry in
@@ -60,25 +48,32 @@ struct DiaryListView: View {
                             .frame(width: 376, height: 136)
                             .background(Color.white)
                             .cornerRadius(15)
+                            .padding(.horizontal)
                             .shadow(color: .gray.opacity(0.1), radius: 10, x: 0, y: 4)
-                        }
-                    }
-                    .navigationBarBackButtonHidden(true)
-                    .toolbar {
-                        ToolbarItem() {
-                            Button(action: {
-                                dismiss()
-                            }) {
-                                Label("Sign In", systemImage: "arrowshape.turn.up.backward.circle")
-                            }
                         }
                     }
                 }
             }
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        dismiss()
+                    }) {
+                            Image(systemName: "xmark")
+                                .foregroundColor(.white)
+                                .font(.system(.title2))
+                                .bold()
+                                .frame(width: 70, height: 50)
+                                .background(Color.orange)
+                                .cornerRadius(25)
+                                .shadow(color:.gray.opacity(0.2), radius: 3,x:0,y:4)
+                    }
+                }
             }
-            .navigationTitle("日記一覧")
-            
         }
+        .navigationTitle("日記一覧")
+    }
         
         func formattedDate(_ date: Date) -> String {
             let formatter = DateFormatter()
