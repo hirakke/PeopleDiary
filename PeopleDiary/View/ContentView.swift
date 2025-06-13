@@ -61,14 +61,13 @@ struct CalendarView: View {
                 }
             }
             .padding(.horizontal)
-            .padding(.top)
+            .padding(.top, 4)
             Divider()
                 .padding(.horizontal)
-            
                 .padding(.bottom, 4)
 
             let columns = Array(repeating: GridItem(.flexible()), count: 7)
-            LazyVGrid(columns: columns, spacing: 8) {
+            LazyVGrid(columns: columns, spacing: 4) {
                 ForEach(weekdays, id: \.self) { day in
                     Text(day)
                         .font(.caption)
@@ -85,7 +84,11 @@ struct CalendarView: View {
                         if hasDiary(on: date) {
                             Circle()
                                 .fill(Color.orange)
-                                .frame(width: 6, height: 6)
+                                .frame(width:6,height:6)
+                        }else {
+                            Circle()
+                                .fill(Color.gray.opacity(0.1))
+                                .frame(width:6,height:6)
                         }
                     }
                     .onTapGesture {
@@ -103,19 +106,20 @@ struct CalendarView: View {
 
     private var weekdays: [String] {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ja_JP")
+        formatter.locale = Locale(identifier: "en_US")
         return formatter.shortWeekdaySymbols
     }
 
     private var monthYearFormatter: DateFormatter {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy年MM月"
-        formatter.locale = Locale(identifier: "ja_JP")
+        formatter.dateFormat = "yyyy/MM"
+        formatter.locale = Locale(identifier: "en_US")
         return formatter
     }
 }
 
 struct ContentView: View {
+
     @State private var date = Date()
     @State var isPresented: Bool = false
     @State private var selectedDate = Date()
@@ -136,12 +140,13 @@ struct ContentView: View {
                     .ignoresSafeArea()
 
                 VStack() {
+
                     CalendarView(selectedDate: $selectedDate, diaryDates: diaryEntry.map { $0.date }) { date in
                         selectedDate = date
                         navigateToDiary = true
                     }
                     .padding(.horizontal)
-                    .padding(.top, 32)
+                    //.padding(.top)
                     .padding(.bottom, 16)
                     .shadow(color:.gray.opacity(0.2), radius:8)
                 
@@ -160,17 +165,20 @@ struct ContentView: View {
                         Spacer()
                         
                     }
+                   
+                    
+                    .foregroundColor(.secondary)
                     .padding(.horizontal)
                     
 
                     ZStack(alignment: .bottom) {
                         ScrollView(.vertical) {
-                            LazyVGrid(columns: [GridItem(.fixed(180)), GridItem(.fixed(180))], spacing: 15) {
+                            LazyVGrid(columns: [GridItem(.fixed(180)), GridItem(.fixed(180))], spacing: 10) {
                                 ForEach(people) { person in
                                     NavigationLink(destination:
                                                     PeopleDiaryView(person: person, isPresented: $isPresented)) {
                                         People(person: person)
-                                            .frame(width: 175, height: 160)
+                                            .frame(width: 175, height: 145)
                                     }
                                 }
                             }

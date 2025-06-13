@@ -20,8 +20,4 @@ class DiaryEntry {
         self.content = content
         self.person = person
     }
-
-    var contentLength: Int {
-        content.count
-    }
 }

@@ -12,6 +12,7 @@ struct DiaryListView: View {
     var forDate: Date
     @Query private var diaryEntries: [DiaryEntry]
     @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         let calendar = Calendar.current
         let filteredEntries = diaryEntries.filter {
@@ -73,19 +74,19 @@ struct DiaryListView: View {
                         }
                     }
                 }
-                
+            }
             }
             .navigationTitle("日記一覧")
+            
         }
+        
+        func formattedDate(_ date: Date) -> String {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy年MM月dd日"
+            formatter.locale = Locale(identifier: "ja_JP")
+            return formatter.string(from: date)
         }
-    
-    func formattedDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy年MM月dd日"
-        formatter.locale = Locale(identifier: "ja_JP")
-        return formatter.string(from: date)
     }
-}
 
 #Preview {
     DiaryListView(forDate: Date())

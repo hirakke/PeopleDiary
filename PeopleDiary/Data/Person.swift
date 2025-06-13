@@ -15,7 +15,9 @@ class Person {
     @Relationship(deleteRule: .cascade) var diaryEntries: [DiaryEntry] = [] //Relationをせってし、Personが消去された時それに紐づくDiaryEntryも削除される。
 
     var totalPoints: Int {
-        diaryEntries.count * 50
+        let basePoints = diaryEntries.count * 50
+        let contentPoints = diaryEntries.map { $0.content.count }.reduce(0, +)
+        return basePoints + Int(Double(contentPoints) * 0.3)
     }
 
     var lastUpdate: Date? {
@@ -25,12 +27,22 @@ class Person {
 
     var tagText: String {
         switch totalPoints {
-        case 0..<100:
-            return "まだまだ"
-        case 100..<200:
-            return "これから"
+        case 0..<150:
+            return "知り合い"
+        case 150..<300:
+            return "話相手"
+        case 300..<450:
+            return "ともだち"
+        case 450..<600:
+            return "なかいい"
+        case 600..<750:
+            return "したとも"
+        case 750..<900:
+            return "まぶだち"
+        case 900..<1050:
+            return "心のとも"
         default:
-            return "まだまだ"
+            return "ほぼ家族"
         }
     }
 
