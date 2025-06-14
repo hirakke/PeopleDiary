@@ -124,6 +124,7 @@ struct ContentView: View {
     @State var isPresented: Bool = false
     @State private var selectedDate = Date()
     @State private var navigateToDiary = false
+    @State private var showAlert = false
     @Query private var people: [Person]
     @Query private var diaryEntry: [DiaryEntry]
     
@@ -163,10 +164,11 @@ struct ContentView: View {
                         Image(systemName:"person.3.sequence.fill")
                         Text("People")
                         Spacer()
+                        Text("\(people.count)人")
+                            .padding(.horizontal)
                         
                     }
-                   
-                    
+                    .font(.headline)
                     .foregroundColor(.secondary)
                     .padding(.horizontal)
                     
@@ -186,7 +188,15 @@ struct ContentView: View {
                         .background(Color.clear)
                         
                         Button(action: {
-                            isPresented = true
+                            isPresented=true
+                            //日記を一日一個にするならアラートを呼び出し
+                            /*
+                            if hasDiaryEntry(on: Date()) {
+                                showAlert = true
+                            } else {
+                                isPresented = true
+                            }
+                             */
                         }) {
                             Image(systemName: "plus")
                                 .frame(width: 65, height: 65)
@@ -196,6 +206,12 @@ struct ContentView: View {
                                 .font(.system(size: 30, weight: .bold))
                                 .shadow(color: .gray.opacity(0.5), radius: 5, x: 0, y: 4)
                         }
+                        //日記を一日一個にする場合、アラート＋遷移をキャンセル
+                        /*
+                        .alert("本日の日記はすでに追加されています", isPresented: $showAlert) {
+                            Button("OK", role: .cancel) {}
+                        }
+                         */
                         .fullScreenCover(isPresented: $isPresented) {
                             AddDiaryView(isPresented: $isPresented)
                         }
