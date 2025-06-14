@@ -54,6 +54,32 @@ struct PeopleDiaryView: View {
         return formatter.string(from: date)
     }
 
+    private var tagColor: Color {
+        switch tagText {
+        case "知り合い": return Color.mint.opacity(0.8)
+        case "話相手": return Color.blue.opacity(0.8)
+        case "ともだち": return Color.green.opacity(0.8)
+        case "なかいい": return Color.teal.opacity(0.8)
+        case "したとも": return Color.orange.opacity(0.8)
+        case "まぶだち": return Color.pink.opacity(0.8)
+        case "心のとも": return Color.purple.opacity(0.8)
+        case "ほぼ家族": return Color.red.opacity(0.8)
+        default: return Color.gray.opacity(0.4)
+        }
+    }
+    
+    var progress: Double {
+        let thresholds = [0, 150, 300, 450,600,750,900,1050]
+        guard let currentIndex = thresholds.lastIndex(where: { person.totalPoints >= $0 }) else {
+            return 0.0
+        }
+        let start = thresholds[currentIndex]
+        let end = (currentIndex + 1 < thresholds.count) ? thresholds[currentIndex + 1] : start + 1
+        if end == start { return 1.0 }
+        let progressInRange = Double(person.totalPoints - start) / Double(end - start)
+        return max(0.0, min(progressInRange, 1.0))
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -94,12 +120,13 @@ struct PeopleDiaryView: View {
                             Circle()
                                 .trim(from: 0, to: Double(totalPoints) / 1050)
                                 .stroke(
-                                    AngularGradient(
+                                    /*AngularGradient(
                                         gradient: Gradient(colors:[.green, .yellow, .orange]),
                                         center: .center,
                                         startAngle: .degrees(0),
                                         endAngle: .degrees(360)
                                     ),
+                                     */
                                     style: StrokeStyle(lineWidth: 10, lineCap: .round, lineJoin: .round)
                                 )
                                 .foregroundColor(.green.opacity(0.8))
@@ -125,13 +152,13 @@ struct PeopleDiaryView: View {
                             Circle()
                                 .stroke(lineWidth: 10)
                                 .opacity(0.6)
-                                .foregroundColor(.orange.opacity(0.8))
+                                .foregroundColor(tagColor.opacity(0.8))
                                 .frame(width: 70, height: 70)
                             
                             Circle()
-                                .trim(from: 0, to: Double(totalPoints) / 1050)
+                                .trim(from: 0, to:progress)
                                 .stroke(style: StrokeStyle(lineWidth: 10, lineCap: .round, lineJoin: .round))
-                                .foregroundColor(.orange.opacity(0.8))
+                                .foregroundColor(tagColor.opacity(0.8))
                                 .rotationEffect(.degrees(-90))
                                 .frame(width: 70, height: 70)
                             
@@ -186,7 +213,7 @@ struct PeopleDiaryView: View {
                                 .frame(width: 376, height: 136)
                                 .background(Color.white)
                                 .cornerRadius(15)
-                                .padding()
+                                .padding(.horizontal)
                                 .shadow(color: .gray.opacity(0.1), radius: 10, x: 0, y: 4)
                             }
                             .buttonStyle(PlainButtonStyle())
@@ -204,7 +231,7 @@ struct PeopleDiaryView: View {
                                 .foregroundColor(.white)
                                 .font(.system(.title2))
                                 .bold()
-                                .frame(width: 70, height: 50)
+                                .frame(width: 70, height: 45)
                                 .background(Color.orange)
                                 .cornerRadius(25)
                                 .shadow(color:.gray.opacity(0.2), radius: 3,x:0,y:4)

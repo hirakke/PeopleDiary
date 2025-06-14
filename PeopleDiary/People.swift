@@ -12,6 +12,7 @@ struct People: View {
     @Environment(\.modelContext) private var context
     let person: Person
     
+    
     @Query private var allEntries: [DiaryEntry]
     
     private var filteredEntries: [DiaryEntry] {
@@ -28,47 +29,52 @@ struct People: View {
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
-                HStack {
+                HStack(alignment:.center) {
                     Text(person.name)
-                        .font(.subheadline)
+                        .font(.headline)
                         .foregroundStyle(.black)
-                        .fontWeight(.bold)
-                        .frame(width: 85, height: 20, alignment: .center)
+                        .fontWeight(.semibold)
+                        .frame(width: 85)
 
                     ZStack {
                         Circle()
-                            .stroke(lineWidth: 5)
+                            .stroke(lineWidth: 8)
                             .opacity(0.3)
                             .foregroundColor(tagColor)
                             .frame(width: 50, height: 50)
+                        
 
                         Circle()
                             .trim(from: 0, to: progress)
-                            .stroke(style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
-                            .foregroundColor(tagColor)
+                            .stroke(style: StrokeStyle(lineWidth: 6, lineCap: .round, lineJoin: .round))
+                            .foregroundColor(tagColor.opacity(0.9))
                             .rotationEffect(.degrees(-90))
                             .frame(width: 50, height: 50)
 
                         Text(tagText)
-                            .font(.caption)
+                            .font(.caption2)
                             .bold()
                             .foregroundColor(.black)
                     }
+               
+                    //.padding()
                 }
                 //Divider()
-                VStack(alignment: .leading){
-                    HStack(spacing: 4) {
+                VStack(alignment: .leading, spacing: 8){
+                    HStack(spacing: 6) {
                         Image(systemName: "person")
-                            .font(.caption)
+                            .font(.caption2)
                             .foregroundColor(.secondary)
                         Text("親密度:")
-                            .font(.caption)
+                            .font(.caption2)
                             .foregroundColor(.secondary)
+                            .fontWeight(.medium)
                         Text("\(person.totalPoints)")
-                            .font(.caption)
+                            .font(.caption2)
                             .foregroundColor(.black)
+                            .fontWeight(.semibold)
                     }
-                    .padding(.horizontal,3)
+                    //.padding(.horizontal, 6)
                      
                  /*
                  Text("\(person.totalPoints)")
@@ -78,52 +84,63 @@ struct People: View {
                         .padding(.horizontal,3)
                  */
                     
-                    HStack(spacing: 4) {
+                    HStack(spacing: 6) {
                         Image(systemName: "note.text")
-                            .font(.caption)
+                            .font(.caption2)
                             .foregroundColor(.secondary)
                         Text("日記数:")
-                            .font(.caption)
+                            .font(.caption2)
                             .foregroundColor(.secondary)
+                            .fontWeight(.medium)
                         Text("\(filteredEntries.count)")
-                            .font(.caption)
+                            .font(.caption2)
                             .foregroundColor(.black)
+                            .fontWeight(.semibold)
                     }
-                    .padding(.horizontal,3)
+                    //.padding(.horizontal, 6)
                    
-                    HStack (spacing:4){
+                    HStack (spacing:6){
                         Image(systemName: "clock.arrow.trianglehead.2.counterclockwise.rotate.90")
-                            .font(.caption)
+                            .font(.caption2)
                             .foregroundColor(.secondary)
                         Text("更新日")
-                            .font(.caption)
+                            .font(.caption2)
                             .foregroundColor(.secondary)
+                            .fontWeight(.medium)
                         
                         if let lastUpdate = filteredEntries.map({ $0.date }).max() {
                             Text(dateFormatter.string(from: lastUpdate))
-                                .font(.caption)
+                                .font(.caption2)
                                 .foregroundColor(.black)
+                                .fontWeight(.semibold)
                         } else {
-                            Text("まだ記録なし")
-                                .font(.caption)
+                            Text("2025/02/20")
+                                .font(.caption2)
                                 .foregroundColor(.secondary)
                         }
                     }
-                    .padding(.horizontal,3)
+                    //.padding(.horizontal, 6)
                     
                 }
-                .padding(.horizontal)
+                
             }
+            .padding()
         
         }
         .frame(width: 175, height: 140)
-        .background(Color.white.opacity(0.9))
+        .background(.white)
         .cornerRadius(8)
-        .shadow(color: .gray.opacity(0.1), radius: 4, x: 0, y: 4)
+        .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 6)
+        /*
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+        )
         .padding(.horizontal)
+         */
     }
     
-    private var progress: Double {
+    var progress: Double {
         let thresholds = [0, 150, 300, 450,600,750,900,1050]
         guard let currentIndex = thresholds.lastIndex(where: { person.totalPoints >= $0 }) else {
             return 0.0
@@ -137,15 +154,15 @@ struct People: View {
     
     private var tagColor: Color {
         switch tagText {
-        case "知り合い": return Color.mint.opacity(0.6)
-        case "話相手": return Color.blue.opacity(0.6)
-        case "ともだち": return Color.green.opacity(0.6)
-        case "なかいい": return Color.teal.opacity(0.6)
-        case "したとも": return Color.orange.opacity(0.6)
-        case "まぶだち": return Color.pink.opacity(0.6)
-        case "心のとも": return Color.purple.opacity(0.6)
-        case "ほぼ家族": return Color.red.opacity(0.6)
-        default: return Color.gray.opacity(0.3)
+        case "知り合い": return Color.mint.opacity(0.8)
+        case "話相手": return Color.blue.opacity(0.8)
+        case "ともだち": return Color.green.opacity(0.8)
+        case "なかいい": return Color.teal.opacity(0.8)
+        case "したとも": return Color.orange.opacity(0.8)
+        case "まぶだち": return Color.pink.opacity(0.8)
+        case "心のとも": return Color.purple.opacity(0.8)
+        case "ほぼ家族": return Color.red.opacity(0.8)
+        default: return Color.gray.opacity(0.4)
         }
     }
     
