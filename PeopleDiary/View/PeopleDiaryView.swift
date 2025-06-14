@@ -94,106 +94,138 @@ struct PeopleDiaryView: View {
                             .fontWeight(.bold)
                         Spacer()
                     }
-                    ZStack{
-                        RoundedRectangle(cornerRadius: 15)
-                            .fill(
-                                LinearGradient(
-                                    colors: [Color.yellow.opacity(0.6), Color.yellow.opacity(0.9)],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .frame(height: 130)
-                            .shadow(color: Color.yellow.opacity(0.4), radius: 8, x: 0, y: 4)
-                            .padding()
-                    HStack{
-                        ZStack {
-                            RoundedRectangle(cornerRadius:45)
-                                .frame(width:90,height:90)
-                                .foregroundColor(.white)
-                            Circle()
-                                .stroke(lineWidth: 10)
-                                .opacity(0.6)
-                                .foregroundColor(.green.opacity(0.8))
-                                .frame(width: 70, height: 70)
-                            
-                            Circle()
-                                .trim(from: 0, to: Double(totalPoints) / 1050)
-                                .stroke(
-                                    /*AngularGradient(
-                                        gradient: Gradient(colors:[.green, .yellow, .orange]),
-                                        center: .center,
-                                        startAngle: .degrees(0),
-                                        endAngle: .degrees(360)
-                                    ),
-                                     */
-                                    style: StrokeStyle(lineWidth: 10, lineCap: .round, lineJoin: .round)
-                                )
-                                .foregroundColor(.green.opacity(0.8))
-                                .rotationEffect(.degrees(-90))
-                                .frame(width: 70, height: 70)
-                            
-                            VStack(spacing: 0) {
-                                Text("親密度")
-                                    .font(.caption)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.black)
-                                Text("\(Int(Double(totalPoints)))")
-                                    .font(.caption)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.black)
-                            }
-                        }
-                        .padding(.horizontal)
-                        ZStack{
-                            RoundedRectangle(cornerRadius:45)
-                                .frame(width:90,height:90)
-                                .foregroundColor(.white)
-                            Circle()
-                                .stroke(lineWidth: 10)
-                                .opacity(0.6)
-                                .foregroundColor(tagColor.opacity(0.8))
-                                .frame(width: 70, height: 70)
-                            
-                            Circle()
-                                .trim(from: 0, to:progress)
-                                .stroke(style: StrokeStyle(lineWidth: 10, lineCap: .round, lineJoin: .round))
-                                .foregroundColor(tagColor.opacity(0.8))
-                                .rotationEffect(.degrees(-90))
-                                .frame(width: 70, height: 70)
-                            
-                            Text("\(tagText)")
-                                .font(.caption)
-                                .fontWeight(.semibold)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(.black)
-                                .frame(width: 45)
-                            
-                            
-                        }
-                        
-                        
-                        
-                    }
-                    .padding(.horizontal)
-                }
-                .shadow(color: Color.black.opacity(0.1), radius: 6, x: 0, y: 3)
                     
-                    HStack(){
-                       
-                        
+                    HStack{
                         ZStack{
-                            Rectangle()
-                                .frame(width: 80, height: 30)
-                                .foregroundColor(.green.opacity(0.8))
-                                .cornerRadius(5)
-                            Text("日記: \(filteredEntries.count)")
-                                .font(.subheadline)
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
+                            RoundedRectangle(cornerRadius: 15)
+                                .fill(
+                                    LinearGradient(
+                                        colors: [Color.yellow.opacity(0.6), Color.yellow.opacity(0.9)],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                                .frame(height: 110)
+                                .shadow(color: Color.yellow.opacity(0.4), radius: 8, x: 0, y: 4)
+                                .padding()
+                            HStack{
+                                ZStack {
+                                    RoundedRectangle(cornerRadius:45)
+                                        .frame(width:90,height:90)
+                                        .foregroundColor(.white)
+                                    Circle()
+                                        .stroke(lineWidth: 10)
+                                        .opacity(0.6)
+                                        .foregroundColor(.green.opacity(0.8))
+                                        .frame(width: 70, height: 70)
+                                    
+                                    Circle()
+                                        .trim(from: 0, to: Double(totalPoints) / 1050)
+                                        .stroke(
+                                            /*AngularGradient(
+                                             gradient: Gradient(colors:[.green, .yellow, .orange]),
+                                             center: .center,
+                                             startAngle: .degrees(0),
+                                             endAngle: .degrees(360)
+                                             ),
+                                             */
+                                            style: StrokeStyle(lineWidth: 10, lineCap: .round, lineJoin: .round)
+                                        )
+                                        .foregroundColor(.green.opacity(0.8))
+                                        .rotationEffect(.degrees(-90))
+                                        .frame(width: 70, height: 70)
+                                    
+                                    VStack(spacing: 0) {
+                                        Text("親密度")
+                                            .font(.caption)
+                                            .fontWeight(.semibold)
+                                            .foregroundColor(.black)
+                                        Text("\(Int(Double(totalPoints)))")
+                                            .font(.caption)
+                                            .fontWeight(.semibold)
+                                            .foregroundColor(.black)
+                                    }
+                                }
+                                .padding(.horizontal)
+                                ZStack{
+                                    RoundedRectangle(cornerRadius:45)
+                                        .frame(width:90,height:90)
+                                        .foregroundColor(.white)
+                                    Circle()
+                                        .stroke(lineWidth: 10)
+                                        .opacity(0.6)
+                                        .foregroundColor(tagColor.opacity(0.8))
+                                        .frame(width: 70, height: 70)
+                                    
+                                    Circle()
+                                        .trim(from: 0, to:progress)
+                                        .stroke(style: StrokeStyle(lineWidth: 10, lineCap: .round, lineJoin: .round))
+                                        .foregroundColor(tagColor.opacity(0.8))
+                                        .rotationEffect(.degrees(-90))
+                                        .frame(width: 70, height: 70)
+                                    
+                                    Text("\(tagText)")
+                                        .font(.caption)
+                                        .fontWeight(.semibold)
+                                        .multilineTextAlignment(.center)
+                                        .foregroundColor(.black)
+                                        .frame(width: 45)
+                                    
+                                    
+                                }
+                                
+                                .padding(.horizontal)
+                                ZStack{
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .foregroundColor(.white)
+                                        .frame(width:90,height:90)
+                                        .padding(10)
+                                        .shadow(color: Color.yellow.opacity(0.4), radius: 4, x: 0, y: 4)
+                                    
+                                    
+                                    
+                                    VStack{
+                                        Text("日記数")
+                                            .font(.subheadline)
+                                            .foregroundColor(.gray)
+                                        Text("\(filteredEntries.count)")//IntからString
+                                            .font(.largeTitle)
+                                            .bold()
+                                            .foregroundColor(.black)
+                                    }
+                                }
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                            }
+                            .padding(.horizontal)
+                        }
+                        //.shadow(color: Color.black.opacity(0.1), radius: 6, x: 0, y: 3)
+                        /*
+                        ZStack{
+                            RoundedRectangle(cornerRadius: 15)
+                                .fill(
+                                    LinearGradient(
+                                        colors: [Color.yellow.opacity(0.6), Color.yellow.opacity(0.9)],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                                .frame(height: 110)
+                                .shadow(color: Color.yellow.opacity(0.4), radius: 4, x: 0, y: 4)
+                            
+                           
+                            .fontWeight(.bold)
+                            
+                        
+                            .padding(.horizontal)
                         }
                         .padding(.horizontal)
-                        
+                         */
                     }
                     ScrollView {
                         ForEach(filteredEntries) { diary in
