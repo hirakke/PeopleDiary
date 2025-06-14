@@ -178,7 +178,9 @@ struct ContentView: View {
                             LazyVGrid(columns: [GridItem(.fixed(180)), GridItem(.fixed(180))], spacing: 10) {
                                 ForEach(people) { person in
                                     NavigationLink(destination:
-                                                    PeopleDiaryView(person: person, isPresented: $isPresented)) {
+                                        PeopleDiaryView(person: person, isPresented: $isPresented)
+                                            
+                                    ) {
                                         People(person: person)
                                             .frame(width: 175, height: 145)
                                     }

@@ -53,7 +53,7 @@ struct PeopleDiaryView: View {
         formatter.dateFormat = "yyyy/MM/dd"
         return formatter.string(from: date)
     }
-
+    
     private var tagColor: Color {
         switch tagText {
         case "知り合い": return Color.mint.opacity(0.8)
@@ -79,7 +79,7 @@ struct PeopleDiaryView: View {
         let progressInRange = Double(person.totalPoints - start) / Double(end - start)
         return max(0.0, min(progressInRange, 1.0))
     }
-
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -204,28 +204,6 @@ struct PeopleDiaryView: View {
                             }
                             .padding(.horizontal)
                         }
-                        //.shadow(color: Color.black.opacity(0.1), radius: 6, x: 0, y: 3)
-                        /*
-                        ZStack{
-                            RoundedRectangle(cornerRadius: 15)
-                                .fill(
-                                    LinearGradient(
-                                        colors: [Color.yellow.opacity(0.6), Color.yellow.opacity(0.9)],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    )
-                                )
-                                .frame(height: 110)
-                                .shadow(color: Color.yellow.opacity(0.4), radius: 4, x: 0, y: 4)
-                            
-                           
-                            .fontWeight(.bold)
-                            
-                        
-                            .padding(.horizontal)
-                        }
-                        .padding(.horizontal)
-                         */
                     }
                     ScrollView {
                         ForEach(filteredEntries) { diary in
@@ -236,7 +214,7 @@ struct PeopleDiaryView: View {
                                     Divider()
                                         .frame(height: 110)
                                         .background(Color.black)
-
+                                    
                                     Text(diary.content)
                                         .padding()
                                         .frame(width: 233, height: 136)
@@ -257,23 +235,23 @@ struct PeopleDiaryView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
+                        isPresented = false
                         dismiss()
                     }) {
-                            Image(systemName: "xmark")
-                                .foregroundColor(.white)
-                                .font(.system(.title2))
-                                .bold()
-                                .frame(width: 70, height: 45)
-                                .background(Color.orange)
-                                .cornerRadius(25)
-                                .shadow(color:.gray.opacity(0.2), radius: 3,x:0,y:4)
+                        Image(systemName: "xmark")
+                            .foregroundColor(.white)
+                            .font(.system(.title2))
+                            .bold()
+                            .frame(width: 70, height: 45)
+                            .background(Color.orange)
+                            .cornerRadius(25)
+                            .shadow(color:.gray.opacity(0.2), radius: 3,x:0,y:4)
                     }
                 }
             }
         }
     }
 }
-
 
 
 
