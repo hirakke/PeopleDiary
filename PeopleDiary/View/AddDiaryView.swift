@@ -27,7 +27,7 @@ struct AddDiaryView: View {
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy/MM/dd"
-        formatter.locale = Locale(identifier: "ja_JP") //日本の時刻にする
+        formatter.locale = Locale(identifier: "ja_JP")
         return formatter
     }()
     
@@ -102,9 +102,12 @@ struct AddDiaryView: View {
                     // 名前入力欄
                     TextField("名前を入力", text: $name)
                         .textFieldStyle(.roundedBorder)
-                        .font(.title2)
+                        .shadow(color:.gray.opacity(0.2),radius:8,x:0,y:2)
+                        .overlay(RoundedRectangle(cornerRadius:8).stroke(Color.white,lineWidth:4))
+                    
+                        .font(.title3)
                         .padding()
-                        .shadow(color:.gray.opacity(0.2),radius:3,x:0,y:2)
+                        
                     
                     // 日記入力欄
                     ZStack(alignment: .topLeading) {

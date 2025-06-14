@@ -46,7 +46,7 @@ struct People: View {
 
                         Circle()
                             .trim(from: 0, to: progress)
-                            .stroke(style: StrokeStyle(lineWidth: 6, lineCap: .round, lineJoin: .round))
+                            .stroke(style: StrokeStyle(lineWidth: 8, lineCap: .round, lineJoin: .round))
                             .foregroundColor(tagColor.opacity(0.9))
                             .rotationEffect(.degrees(-90))
                             .frame(width: 50, height: 50)
