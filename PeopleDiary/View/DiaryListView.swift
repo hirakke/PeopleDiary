@@ -25,6 +25,8 @@ struct DiaryListView: View {
             VStack {
                 Text("\(formattedDate(forDate))の日記 ")
                     .font(.title2)
+                    .foregroundColor(.black)
+                    .bold()
                     .padding()
 
                 if filteredEntries.isEmpty {
