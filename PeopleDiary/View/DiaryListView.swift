@@ -12,7 +12,7 @@ struct DiaryListView: View {
     var forDate: Date
     @Query private var diaryEntries: [DiaryEntry]
     @Environment(\.dismiss) private var dismiss
-    
+    @State var isPresented: Bool = false
     var body: some View {
         let calendar = Calendar.current
         let filteredEntries = diaryEntries.filter {
@@ -46,10 +46,12 @@ struct DiaryListView: View {
                                         .background(.black)
                                     Text(entry.content)
                                         .padding()
-                                        .frame(width: 233, height: 136)
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 136)
                                 }
                                 .lineLimit(3)
-                                .frame(width: 376, height: 136)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 136)
                                 .background(Color.white)
                                 .cornerRadius(15)
                                 .padding(.horizontal)
@@ -75,6 +77,23 @@ struct DiaryListView: View {
                                 .background(Color.orange)
                                 .cornerRadius(25)
                                 .shadow(color:.gray.opacity(0.2), radius: 3,x:0,y:4)
+                    }
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        isPresented = true
+                    }) {
+                        Image(systemName: "plus")
+                            .foregroundColor(.white)
+                            .font(.system(.title2))
+                            .bold()
+                            .frame(width: 70, height: 45)
+                            .background(Color.orange)
+                            .cornerRadius(25)
+                            .shadow(color: .gray.opacity(0.2), radius: 3, x: 0, y: 4)
+                    }
+                    .fullScreenCover(isPresented: $isPresented) {
+                        AddDiaryView(isPresented: $isPresented,forDate: forDate)
                     }
                 }
             }

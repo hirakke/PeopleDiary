@@ -5,7 +5,7 @@ struct CalendarView: View {
     @Binding var selectedDate: Date
     var diaryDates: [Date]
     var onDateSelected: (Date) -> Void
-
+    var forDate: Date
     @State private var currentMonth: Date
 
     private let calendar = Calendar.current
@@ -32,6 +32,7 @@ struct CalendarView: View {
         self._selectedDate = selectedDate
         self.diaryDates = diaryDates
         self.onDateSelected = onDateSelected
+        self.forDate = Date()
         self._currentMonth = State(initialValue: selectedDate.wrappedValue)
     }
 
@@ -76,9 +77,9 @@ struct CalendarView: View {
                 ForEach(currentMonthDates, id: \.self) { date in
                     VStack {
                         Text("\(calendar.component(.day, from: date))")
-                            .foregroundColor(isSameDay(date, selectedDate) ? .white : .black)
+                            .foregroundColor(isSameDay(date, Date()) ? .white : .black)
                             .padding(8)
-                            .background(isSameDay(date, selectedDate) ? Color.red : Color.clear)
+                            .background(isSameDay(date, Date()) ? Color.red : Color.clear)
                             .clipShape(Circle())
                             .shadow(color:.gray.opacity(0.5),radius: 3,x:0,y:3)
                         if hasDiary(on: date) {
@@ -136,86 +137,87 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                Color(red: 255/255, green: 248/255, blue: 219/255)
-                    .ignoresSafeArea()
-
-                VStack() {
-
-                    CalendarView(selectedDate: $selectedDate, diaryDates: diaryEntry.map { $0.date }) { date in
-                        selectedDate = date
-                        navigateToDiary = true
-                    }
-                    .padding(.horizontal)
-                    //.padding(.top)
-                    .padding(.bottom, 16)
-                    .shadow(color:.gray.opacity(0.2), radius:8)
-                
-                    NavigationLink(
-                        destination: DiaryListView(forDate: selectedDate),
-                        isActive: $navigateToDiary
-                    ) {
-                        EmptyView()
-                    }
-                    .hidden()
+            GeometryReader { geometry in
+                ZStack {
+                    Color(red: 255/255, green: 248/255, blue: 219/255)
+                        .ignoresSafeArea()
                     
-                    HStack(){
+                    VStack() {
                         
-                        Image(systemName:"person.3.sequence.fill")
-                        Text("People")
-                        Spacer()
-                        Text("\(people.count)人")
-                            .padding(.horizontal)
+                        CalendarView(selectedDate: $selectedDate, diaryDates: diaryEntry.map { $0.date }) { date in
+                            selectedDate = date
+                            navigateToDiary = true
+                        }
+                        .padding(.horizontal)
+                        //.padding(.top)
+                        .padding(.bottom, 16)
+                        .shadow(color:.gray.opacity(0.2), radius:8)
                         
-                    }
-                    .font(.headline)
-                    .foregroundColor(.secondary)
-                    .padding(.horizontal)
-                    
-
-                    ZStack(alignment: .bottom) {
-                        ScrollView(.vertical) {
-                            LazyVGrid(columns: [GridItem(.fixed(180)), GridItem(.fixed(180))], spacing: 10) {
-                                ForEach(people) { person in
-                                    NavigationLink(destination:
-                                        PeopleDiaryView(person: person, isPresented: $isPresented)
-                                            
-                                    ) {
-                                        People(person: person)
-                                            .frame(width: 175, height: 145)
+                        NavigationLink(
+                            destination: DiaryListView(forDate: selectedDate),
+                            isActive: $navigateToDiary
+                        ) {
+                            EmptyView()
+                        }
+                        .hidden()
+                        
+                        HStack(){
+                            
+                            Image(systemName:"person.3.sequence.fill")
+                            Text("People")
+                            Spacer()
+                            Text("\(people.count)人")
+                                .padding(.horizontal)
+                            
+                        }
+                        .font(.headline)
+                        .foregroundColor(.secondary)
+                        .padding(.horizontal)
+                        
+                        
+                        ZStack(alignment: .bottom) {
+                            ScrollView(.vertical) {
+                                LazyVGrid(columns: [GridItem(.fixed(geometry.size.width/2-20)), GridItem(.fixed(geometry.size.width/2-20))], spacing: 10) {
+                                    ForEach(people) { person in
+                                        NavigationLink(destination:
+                                                        PeopleDiaryView(person: person, isPresented: $isPresented)
+                                        ) {
+                                            People(person: person)
+                                        }
                                     }
                                 }
                             }
-                        }
-                        .background(Color.clear)
-                        
-                        Button(action: {
-                            isPresented=true
-                            //日記を一日一個にするならアラートを呼び出し
-                            /*
-                            if hasDiaryEntry(on: Date()) {
-                                showAlert = true
-                            } else {
-                                isPresented = true
+                            .background(Color.clear)
+                            
+                            Button(action: {
+                                isPresented=true
+                                //日記を一日一個にするならアラートを呼び出し
+                                /*
+                                 if hasDiaryEntry(on: Date()) {
+                                 showAlert = true
+                                 } else {
+                                 isPresented = true
+                                 }
+                                 */
+                            }) {
+                                Image(systemName: "plus")
+                                    .frame(width: 65, height: 65)
+                                    .background(.orange.opacity(0.8))
+                                    .cornerRadius(32.5)
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 30, weight: .bold))
+                                    .shadow(color: .gray.opacity(0.5), radius: 5, x: 0, y: 4)
                             }
+                            //日記を一日一個にする場合、アラート＋遷移をキャンセル
+                            /*
+                             .alert("本日の日記はすでに追加されています", isPresented: $showAlert) {
+                             Button("OK", role: .cancel) {}
+                             
+                             }
                              */
-                        }) {
-                            Image(systemName: "plus")
-                                .frame(width: 65, height: 65)
-                                .background(.orange.opacity(0.8))
-                                .cornerRadius(32.5)
-                                .foregroundColor(.white)
-                                .font(.system(size: 30, weight: .bold))
-                                .shadow(color: .gray.opacity(0.5), radius: 5, x: 0, y: 4)
-                        }
-                        //日記を一日一個にする場合、アラート＋遷移をキャンセル
-                        /*
-                        .alert("本日の日記はすでに追加されています", isPresented: $showAlert) {
-                            Button("OK", role: .cancel) {}
-                        }
-                         */
-                        .fullScreenCover(isPresented: $isPresented) {
-                            AddDiaryView(isPresented: $isPresented)
+                            .fullScreenCover(isPresented: $isPresented) {
+                                AddDiaryView(isPresented: $isPresented, forDate: Date())
+                            }
                         }
                     }
                 }

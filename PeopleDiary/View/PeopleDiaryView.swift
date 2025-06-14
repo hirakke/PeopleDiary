@@ -18,17 +18,12 @@ struct PeopleDiaryView: View {
         allEntries.filter { $0.person === person }//指定された人と一致する日記を表示
     }
     
-    var totalPoints: Int {
-        let totalCharacters = filteredEntries.map { $0.content.count }.reduce(0, +)
-        return filteredEntries.count * 50 + Int(Double(totalCharacters) * 0.1)
-    }
-    
     var lastUpdate: Date? {
         filteredEntries.map { $0.date }.max()//日付で最も大きいものを
     }
     
     var tagText: String {
-        switch totalPoints {
+        switch person.totalPoints {
         case 0..<150:
             return "知り合い"
         case 150..<300:
@@ -120,7 +115,7 @@ struct PeopleDiaryView: View {
                                         .frame(width: 70, height: 70)
                                     
                                     Circle()
-                                        .trim(from: 0, to: Double(totalPoints) / 1050)
+                                        .trim(from: 0, to: Double(person.totalPoints) / 1050)
                                         .stroke(
                                             /*AngularGradient(
                                              gradient: Gradient(colors:[.green, .yellow, .orange]),
@@ -140,7 +135,7 @@ struct PeopleDiaryView: View {
                                             .font(.caption)
                                             .fontWeight(.semibold)
                                             .foregroundColor(.black)
-                                        Text("\(Int(Double(totalPoints)))")
+                                        Text("\(Int(Double(person.totalPoints)))")
                                             .font(.caption)
                                             .fontWeight(.semibold)
                                             .foregroundColor(.black)
@@ -203,6 +198,7 @@ struct PeopleDiaryView: View {
                                 
                             }
                             .padding(.horizontal)
+                            .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 4)
                         }
                     }
                     ScrollView {
@@ -217,10 +213,11 @@ struct PeopleDiaryView: View {
                                     
                                     Text(diary.content)
                                         .padding()
-                                        .frame(width: 233, height: 136)
+                                        .frame(width: 230, height: 136)
                                 }
                                 .lineLimit(3)
-                                .frame(width: 376, height: 136)
+                                .frame(maxWidth:.infinity)
+                                .frame(height: 136)
                                 .background(Color.white)
                                 .cornerRadius(15)
                                 .padding(.horizontal)

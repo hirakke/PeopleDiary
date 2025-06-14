@@ -9,16 +9,18 @@ import SwiftUI
 import SwiftData
 
 struct AddDiaryView: View {
+    var forDate: Date
+    @Binding var isPresented: Bool
+    @State private var nowDate: Date
+
     @State private var navigateToDiary = false
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss //戻る処理
-    @Binding var isPresented: Bool
     @Query private var people: [Person]
     @Query private var diaryList: [DiaryEntry]
     
     @State private var name = ""
     @State private var content = ""
-    @State private var nowDate = Date()
     @State private var dateText = ""
     @State private var showAlert = false
     
@@ -30,6 +32,12 @@ struct AddDiaryView: View {
         formatter.locale = Locale(identifier: "ja_JP")
         return formatter
     }()
+    
+    init(isPresented: Binding<Bool>, forDate: Date) {
+        self._isPresented = isPresented
+        self.forDate = forDate
+        self._nowDate = State(initialValue: forDate)
+    }
     
     var body: some View{
         NavigationStack{
@@ -55,13 +63,7 @@ struct AddDiaryView: View {
                         
                         Spacer()
                         
-                        Text(dateText.isEmpty ? dateFormatter.string(from: nowDate) : dateText)
-                            .onAppear {
-                                Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                                    self.nowDate = Date()
-                                    dateText = dateFormatter.string(from: nowDate)
-                                }
-                            }//今日の日付を表示
+                        Text(dateFormatter.string(from: forDate))
                             .font(.title)
                             .bold()
                         
@@ -134,28 +136,6 @@ struct AddDiaryView: View {
                 
                 
                 Spacer()
-                
-                /*NavigationLink(
-                 destination: {
-                 Group{
-                 if let saved = savedPerson {
-                 PeopleDiaryView(person: saved, isPresented: $isPresented)
-                 } else {
-                 // fallback View が必要（空ViewでもOK）
-                 EmptyView()
-                 }
-                 }
-                 },
-                 isActive: $navigateToDiary,
-                 label: {
-                 EmptyView()
-                 }
-                 )
-                 .hidden()
-                 
-                 */
-                
-                
             }
         }
     }
@@ -174,7 +154,7 @@ struct AddDiaryView: View {
             }()
             
             // DiaryEntry を作成して person に紐付け
-            let diary = DiaryEntry(date: Date(), content: content)
+            let diary = DiaryEntry(date: forDate, content: content)
             diary.person = person
             person.diaryEntries.append(diary)
             
@@ -192,7 +172,7 @@ struct AddDiaryView: View {
     
     
     #Preview {
-        AddDiaryView(isPresented: .constant(true))
+        AddDiaryView(isPresented: .constant(true), forDate: Date())
         
         //$をつける→Binding
         //

@@ -127,7 +127,8 @@ struct People: View {
             .padding()
         
         }
-        .frame(width: 175, height: 140)
+        .frame(height: 140)
+        .frame(maxWidth: .infinity)
         .background(.white)
         .cornerRadius(8)
         .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 6)
