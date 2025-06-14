@@ -114,7 +114,7 @@ struct People: View {
                                 .foregroundColor(.black)
                                 .fontWeight(.semibold)
                         } else {
-                            Text("2025/02/20")
+                            Text("未登録")
                                 .font(.caption2)
                                 .foregroundColor(.secondary)
                         }
