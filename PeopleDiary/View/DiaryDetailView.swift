@@ -20,13 +20,15 @@ struct DiaryDetailView: View {
                 Text(diary.date.formatted(.dateTime.year().month(.twoDigits).day(.twoDigits).locale(Locale(identifier: "ja_JP"))).replacingOccurrences(of: "-", with: "/"))
                     .font(.title)
                     .foregroundColor(.black)
+                    .bold()
+                    .padding(.bottom)
                 
                 Text(diary.person?.name ?? "不明な人物")
-                    .font(.title)
+                    .font(.largeTitle)
                     .bold()
                 ZStack(alignment:.topLeading){
-                    RoundedRectangle(cornerRadius:10)
-                    Color(.white)
+                    RoundedRectangle(cornerRadius:10 )
+                        .fill(.white)
                         .shadow(color:.gray.opacity(0.4),radius:4,x:0,y:4)
                     Text(diary.content)
                         .font(.body)
