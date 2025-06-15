@@ -30,22 +30,23 @@ class Person {
         case 0..<150:
             return "知り合い"
         case 150..<300:
-            return "話相手"
+            return "話し相手"
         case 300..<450:
             return "ともだち"
         case 450..<600:
-            return "なかいい"
+            return "仲良し"
         case 600..<750:
-            return "したとも"
+            return "親友"
         case 750..<900:
-            return "まぶだち"
+            return "大親友"
         case 900..<1050:
-            return "心のとも"
+            return "大大親友"
+        case 1050..<1200:
+            return "心の友"
         default:
             return "ほぼ家族"
         }
     }
-
     init(name: String) {
         self.name = name
     }

@@ -103,15 +103,3 @@ struct DiaryDetailView: View {
         }
     }
 }
-
-#Preview {
-    let container = SampleData.sampleContainer()
-    let context = container.mainContext
-
-    
-    // 例として最初のDiaryEntryを取得
-    let diary = try! context.fetch(FetchDescriptor<DiaryEntry>()).first!
-
-    return DiaryDetailView(diary: diary)
-        .modelContainer(container)
-}

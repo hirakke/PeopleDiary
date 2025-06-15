@@ -142,7 +142,7 @@ struct People: View {
     }
     
     var progress: Double {
-        let thresholds = [0, 150, 300, 450,600,750,900,1050]
+        let thresholds = [0, 150, 300, 450,600,750,900,1050,1200]
         guard let currentIndex = thresholds.lastIndex(where: { person.totalPoints >= $0 }) else {
             return 0.0
         }
@@ -155,44 +155,39 @@ struct People: View {
     
     private var tagColor: Color {
         switch tagText {
-        case "知り合い": return Color.mint.opacity(0.8)
-        case "話相手": return Color.blue.opacity(0.8)
-        case "ともだち": return Color.green.opacity(0.8)
-        case "なかいい": return Color.teal.opacity(0.8)
-        case "したとも": return Color.orange.opacity(0.8)
-        case "まぶだち": return Color.pink.opacity(0.8)
-        case "心のとも": return Color.purple.opacity(0.8)
-        case "ほぼ家族": return Color.red.opacity(0.8)
-        default: return Color.gray.opacity(0.4)
+        case "知り合い": return Color(hex: "#A0C4FF").opacity(0.9)    // 淡い水色
+        case "話し相手": return Color(hex: "#72EFDD").opacity(0.9)    // 明るいシアン
+        case "ともだち": return Color(hex: "#64DFDF").opacity(0.9)    // 青緑@
+        case "仲良し": return Color(hex: "#80ED99").opacity(0.9)      // 若草色
+        case "親友": return Color(hex: "#008000").opacity(0.7)        // 明るい黄緑 薄くなるのやだ
+        case "大親友": return Color(hex: "#FFD166").opacity(0.9)      // 濃いめ黄色
+        case "大大親友": return Color(hex: "#FF9F1C").opacity(0.9)    // 橙色
+        case "心の友": return Color(hex: "#EF476F").opacity(0.9)      // 鮮やかなピンク
+        case "ほぼ家族": return Color(hex: "#6A4C93").opacity(0.9)    // 紫
+        default: return Color(hex: "#CCCCCC").opacity(0.4)            // グレー
         }
     }
     
-    private var tagText: String {
-        let points = person.totalPoints
-        switch points {
+    var tagText: String {
+        switch person.totalPoints {
         case 0..<150:
             return "知り合い"
         case 150..<300:
-            return "話相手"
+            return "話し相手"
         case 300..<450:
             return "ともだち"
         case 450..<600:
-            return "なかいい"
+            return "仲良し"
         case 600..<750:
-            return "したとも"
+            return "親友"
         case 750..<900:
-            return "まぶだち"
+            return "大親友"
         case 900..<1050:
-            return "心のとも"
+            return "大大親友"
+        case 1050..<1200:
+            return "心の友"
         default:
             return "ほぼ家族"
         }
     }
-}
-
-#Preview {
-    let modelContainer = try! ModelContainer(for: Person.self, DiaryEntry.self)
-    let previewPerson = Person(name: "太郎")
-    return People(person: previewPerson)
-        .modelContainer(modelContainer)
 }

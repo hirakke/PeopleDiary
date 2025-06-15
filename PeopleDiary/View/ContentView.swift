@@ -226,8 +226,3 @@ struct ContentView: View {
     }
 }
         
-
-#Preview {
-    ContentView()
-        .modelContainer(SampleData.sampleContainer())
-}

@@ -88,18 +88,11 @@ struct AddDiaryView: View {
                             PeopleDiaryView(person: person, isPresented: $isPresented)
                         }
                         Spacer()
-                        /*
-                         .fullScreenCover(item: $savedPerson){ person in
-                         PeopleDiaryView(person: person, isPresented: $isPresented)
-                         */
                     }
                     .alert("すべての項目を入力してください", isPresented: $showAlert) {
                         Button("OK", role: .cancel) {}
                     }//showAlertの時はポップアップでアラート
                     .ignoresSafeArea(.keyboard, edges: .bottom)
-                    
-                    
-                    
                     // 名前入力欄
                     TextField("名前を入力", text: $name)
                         .textFieldStyle(.roundedBorder)
@@ -164,16 +157,4 @@ struct AddDiaryView: View {
             savedPerson = person
             navigateToDiary = true
         }
-    
-    
-    }
-
-    
-    
-    #Preview {
-        AddDiaryView(isPresented: .constant(true), forDate: Date())
-        
-        //$をつける→Binding
-        //
-        
     }

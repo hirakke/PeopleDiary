@@ -108,7 +108,3 @@ struct DiaryListView: View {
             return formatter.string(from: date)
         }
     }
-
-#Preview {
-    DiaryListView(forDate: Date())
-}
