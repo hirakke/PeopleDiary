@@ -117,13 +117,6 @@ struct PeopleDiaryView: View {
                                     Circle()
                                         .trim(from: 0, to: Double(person.totalPoints) / 1050)
                                         .stroke(
-                                            /*AngularGradient(
-                                             gradient: Gradient(colors:[.green, .yellow, .orange]),
-                                             center: .center,
-                                             startAngle: .degrees(0),
-                                             endAngle: .degrees(360)
-                                             ),
-                                             */
                                             style: StrokeStyle(lineWidth: 10, lineCap: .round, lineJoin: .round)
                                         )
                                         .foregroundColor(.green.opacity(0.8))

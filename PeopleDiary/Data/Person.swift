@@ -15,7 +15,7 @@ class Person {
     @Relationship(deleteRule: .cascade) var diaryEntries: [DiaryEntry] = [] //Relationをせってし、Personが消去された時それに紐づくDiaryEntryも削除される。
 
     var totalPoints: Int {
-        let basePoints = diaryEntries.count * 50
+        let basePoints = diaryEntries.count * 30
         let contentPoints = diaryEntries.map { $0.content.count }.reduce(0, +)
         return basePoints + Int(Double(contentPoints) * 0.3)
     }

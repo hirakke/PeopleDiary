@@ -96,7 +96,6 @@ struct AddDiaryView: View {
                     .alert("すべての項目を入力してください", isPresented: $showAlert) {
                         Button("OK", role: .cancel) {}
                     }//showAlertの時はポップアップでアラート
-                    
                     .ignoresSafeArea(.keyboard, edges: .bottom)
                     
                     

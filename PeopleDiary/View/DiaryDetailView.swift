@@ -51,10 +51,12 @@ struct DiaryDetailView: View {
                                 .padding(.horizontal)
                         }
                     } else {
-                        Text(diary.content)
-                            .font(.body)
-                            .foregroundColor(.black)
-                            .padding()
+                        ScrollView{
+                            Text(diary.content)
+                                .font(.body)
+                                .foregroundColor(.black)
+                                .padding()
+                        }
                     }
                 
                 }
