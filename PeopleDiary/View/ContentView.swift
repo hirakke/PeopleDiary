@@ -12,10 +12,20 @@ struct CalendarView: View {
     private var currentMonthDates: [Date] {
         guard let monthInterval = calendar.dateInterval(of: .month, for: currentMonth) else { return [] }
         var dates: [Date] = []
-        var date = monthInterval.start
-        while date < monthInterval.end {
-            dates.append(date)
-            date = calendar.date(byAdding: .day, value: 1, to: date)!
+
+        // Adjust to start from Monday
+        var startDate = monthInterval.start
+        let weekday = calendar.component(.weekday, from: startDate)
+        let weekdayIndex = (weekday + 5) % 7 // Convert Sunday=1...Saturday=7 to Monday=0...Sunday=6
+
+        if let adjustedStart = calendar.date(byAdding: .day, value: -weekdayIndex, to: startDate) {
+            startDate = adjustedStart
+        }
+
+        for i in 0..<42 { // 6 weeks grid
+            if let date = calendar.date(byAdding: .day, value: i, to: startDate) {
+                dates.append(date)
+            }
         }
         return dates
     }
@@ -75,26 +85,30 @@ struct CalendarView: View {
                         .foregroundColor(.gray)
                 }
                 ForEach(currentMonthDates, id: \.self) { date in
-                    VStack {
-                        Text("\(calendar.component(.day, from: date))")
-                            .foregroundColor(isSameDay(date, Date()) ? .white : .black)
-                            .padding(8)
-                            .background(isSameDay(date, Date()) ? Color.red : Color.clear)
-                            .clipShape(Circle())
-                            .shadow(color:.gray.opacity(0.5),radius: 3,x:0,y:3)
-                        if hasDiary(on: date) {
-                            Circle()
-                                .fill(Color.orange)
-                                .frame(width:6,height:6)
-                        }else {
-                            Circle()
-                                .fill(Color.gray.opacity(0.1))
-                                .frame(width:6,height:6)
+                    if calendar.isDate(date, equalTo: currentMonth, toGranularity: .month) {
+                        VStack {
+                            Text("\(calendar.component(.day, from: date))")
+                                .foregroundColor(isSameDay(date, Date()) ? .white : .black)
+                                .padding(8)
+                                .background(isSameDay(date, Date()) ? Color.red : Color.clear)
+                                .clipShape(Circle())
+                                .shadow(color:.gray.opacity(0.5),radius: 3,x:0,y:3)
+                            if hasDiary(on: date) {
+                                Circle()
+                                    .fill(Color.orange)
+                                    .frame(width:6,height:6)
+                            } else {
+                                Circle()
+                                    .fill(Color.gray.opacity(0.1))
+                                    .frame(width:6,height:6)
+                            }
                         }
-                    }
-                    .onTapGesture {
-                        selectedDate = date
-                        onDateSelected(date)
+                        .onTapGesture {
+                            selectedDate = date
+                            onDateSelected(date)
+                        }
+                    } else {
+                        Color.clear.frame(height: 44)
                     }
                 }
             }
@@ -107,8 +121,8 @@ struct CalendarView: View {
 
     private var weekdays: [String] {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US")
-        return formatter.shortWeekdaySymbols
+        formatter.locale = Locale(identifier: "ja_JP")
+        return formatter.shortWeekdaySymbols ?? []
     }
 
     private var monthYearFormatter: DateFormatter {
