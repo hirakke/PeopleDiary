@@ -89,7 +89,7 @@ struct CalendarView: View {
                         VStack {
                             Text("\(calendar.component(.day, from: date))")
                                 .foregroundColor(isSameDay(date, Date()) ? .white : .black)
-                                .padding(8)
+                                .padding(4)
                                 .background(isSameDay(date, Date()) ? Color.red : Color.clear)
                                 .clipShape(Circle())
                                 .shadow(color:.gray.opacity(0.5),radius: 3,x:0,y:3)
