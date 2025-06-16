@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		6F90E1C52DF0405C0021E1E9 /* PeopleDiary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PeopleDiary.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F90E1C52DF0405C0021E1E9 /* humary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = humary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		6F90E1C72DF0405C0021E1E9 /* PeopleDiary */ = {
+		6F90E1C72DF0405C0021E1E9 /* humary */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = PeopleDiary;
+			path = humary;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -32,7 +32,7 @@
 		6F90E1BC2DF0405C0021E1E9 = {
 			isa = PBXGroup;
 			children = (
-				6F90E1C72DF0405C0021E1E9 /* PeopleDiary */,
+				6F90E1C72DF0405C0021E1E9 /* humary */,
 				6F90E1C62DF0405C0021E1E9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -40,7 +40,7 @@
 		6F90E1C62DF0405C0021E1E9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6F90E1C52DF0405C0021E1E9 /* PeopleDiary.app */,
+				6F90E1C52DF0405C0021E1E9 /* humary.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +48,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6F90E1C42DF0405C0021E1E9 /* PeopleDiary */ = {
+		6F90E1C42DF0405C0021E1E9 /* humary */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6F90E1D22DF0405E0021E1E9 /* Build configuration list for PBXNativeTarget "PeopleDiary" */;
+			buildConfigurationList = 6F90E1D22DF0405E0021E1E9 /* Build configuration list for PBXNativeTarget "humary" */;
 			buildPhases = (
 				6F90E1C12DF0405C0021E1E9 /* Sources */,
 				6F90E1C22DF0405C0021E1E9 /* Frameworks */,
@@ -61,13 +61,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				6F90E1C72DF0405C0021E1E9 /* PeopleDiary */,
+				6F90E1C72DF0405C0021E1E9 /* humary */,
 			);
-			name = PeopleDiary;
+			name = humary;
 			packageProductDependencies = (
 			);
 			productName = PeopleDiary;
-			productReference = 6F90E1C52DF0405C0021E1E9 /* PeopleDiary.app */;
+			productReference = 6F90E1C52DF0405C0021E1E9 /* humary.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -85,7 +85,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 6F90E1C02DF0405C0021E1E9 /* Build configuration list for PBXProject "PeopleDiary" */;
+			buildConfigurationList = 6F90E1C02DF0405C0021E1E9 /* Build configuration list for PBXProject "humary" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -101,7 +101,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6F90E1C42DF0405C0021E1E9 /* PeopleDiary */,
+				6F90E1C42DF0405C0021E1E9 /* humary */,
 			);
 		};
 /* End PBXProject section */
@@ -305,7 +305,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6F90E1C02DF0405C0021E1E9 /* Build configuration list for PBXProject "PeopleDiary" */ = {
+		6F90E1C02DF0405C0021E1E9 /* Build configuration list for PBXProject "humary" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6F90E1D02DF0405E0021E1E9 /* Debug */,
@@ -314,7 +314,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6F90E1D22DF0405E0021E1E9 /* Build configuration list for PBXNativeTarget "PeopleDiary" */ = {
+		6F90E1D22DF0405E0021E1E9 /* Build configuration list for PBXNativeTarget "humary" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6F90E1D32DF0405E0021E1E9 /* Debug */,
